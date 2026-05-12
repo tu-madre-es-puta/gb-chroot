@@ -68,8 +68,7 @@ einfo "Copying resolv.conf"
 
 einfo "Creating portage directories"
 (
-    mkdir "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
-    mkdir "$CHROOT_TOP"/"$1"/var/db/repos/crossdev
+    mkdir "$CHROOT_TOP"/"$1"/var/db/repos
 )
 
 einfo "Creating layman directory"

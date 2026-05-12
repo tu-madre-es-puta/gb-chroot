@@ -37,10 +37,8 @@ ebegin "Cloning $1 into $2"
         --exclude '/tmp' \
         --exclude '/var/cache/binpkgs' \
         --exclude '/var/cache/distfiles' \
-        --exclude '/var/db/repos/gentoo' \
-        --exclude '/var/db/repos/crossdev' \
+        --exclude '/var/db/repos' \
         --exclude '/etc/portage/repos.conf' \
-        --exclude '/var/lib/layman' \
         --exclude '/run'
 eend $?
 
@@ -52,10 +50,8 @@ einfo "Re-creating folders"
     mkdir -p "$CHROOT_TOP/$2/tmp"
     mkdir -p "$CHROOT_TOP/$2/var/cache/binpkgs"
     mkdir -p "$CHROOT_TOP/$2/var/cache/distfiles"
-    mkdir -p "$CHROOT_TOP/$2/var/db/repos/gentoo"
-    mkdir -p "$CHROOT_TOP/$2/var/db/repos/crossdev"
+    mkdir -p "$CHROOT_TOP/$2/var/db/repos"
     mkdir -p "$CHROOT_TOP/$2/etc/portage/repos.conf"
-    mkdir -p "$CHROOT_TOP/$2/var/lib/layman"
     mkdir -p "$CHROOT_TOP/$2/run"
 )
 

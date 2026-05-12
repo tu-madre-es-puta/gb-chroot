@@ -50,10 +50,8 @@ mount_it()
     mount -o bind /tmp "$CHROOT_TOP/$1/tmp"
     mount -o bind "/var/cache/binpkgs/$1" "$CHROOT_TOP/$1/var/cache/binpkgs"
     mount -o bind /var/cache/distfiles "$CHROOT_TOP/$1/var/cache/distfiles"
-    mount -o bind /var/db/repos/gentoo "$CHROOT_TOP/$1/var/db/repos/gentoo"
-    mount -o bind /var/db/repos/crossdev "$CHROOT_TOP/$1/var/db/repos/crossdev"
+    mount -o bind /var/db/repos "$CHROOT_TOP/$1/var/db/repos"
     mount -o bind /etc/portage/repos.conf "$CHROOT_TOP/$1/etc/portage/repos.conf"
-    mount -o bind /var/lib/layman "$CHROOT_TOP/$1/var/lib/layman"
     mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none "$CHROOT_TOP/$1/run"
     if [ -n "$USE_TMPFS" ];
     then
@@ -72,10 +70,8 @@ unmount_it()
     umount -f "$CHROOT_TOP/$1/tmp"
     umount -f "$CHROOT_TOP/$1/var/cache/binpkgs"
     umount -f "$CHROOT_TOP/$1/var/cache/distfiles"
-    umount -f "$CHROOT_TOP/$1/var/db/repos/gentoo"
-    umount -f "$CHROOT_TOP/$1/var/db/repos/crossdev"
+    umount -f "$CHROOT_TOP/$1/var/db/repos"
     umount -f "$CHROOT_TOP/$1/etc/portage/repos.conf"
-    umount -f "$CHROOT_TOP/$1/var/lib/layman"
     umount -f "$CHROOT_TOP/$1/run"
     if [ -n "$USE_TMPFS" ];
     then

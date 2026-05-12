@@ -30,7 +30,7 @@ then
 	check_exit 1 "Updating portage"
 fi
 
-emerge --verbose --keep-going=y --usepkg=y --update --deep --changed-use --with-bdeps=y @world
+emerge --verbose --keep-going=y --usepkg=y --update --deep --changed-use --backtrack=300 --with-bdeps=y @world
 check_exit 1 "Update"
 
 emerge --depclean
