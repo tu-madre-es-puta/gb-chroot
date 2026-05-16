@@ -23,11 +23,42 @@ einfo "Creating /var/cache/binpkgs/$1"
     mkdir /var/cache/binpkgs/"$1"
 )
 
-#TODO implement downloading + gpg checking
-ebegin "Unpacking $(ls "$CHROOT_TOP"/*"$2"-[0-9]*.tar.*)"
+STAGE3_TARBALL=$(ls "$CHROOT_TOP"/*"$2"-[0-9]*.tar.xz 2>/dev/null \
+    || ls "$CHROOT_TOP"/*"$2"-[0-9]*.tar.zst 2>/dev/null \
+    || ls "$CHROOT_TOP"/*"$2"-[0-9]*.tar.bz2 2>/dev/null \
+    || ls "$CHROOT_TOP"/*"$2"-[0-9]*.tar.gz 2>/dev/null)
+STAGE3_ASC="${STAGE3_TARBALL}.asc"
+GENTOO_RELEASE_KEY="/usr/share/openpgp-keys/gentoo-release.asc"
+
+if [ -z "$STAGE3_TARBALL" ]; then
+    eerror "No stage3 tarball found matching *$2-[0-9]*.tar.{xz,zst,bz2,gz} in $CHROOT_TOP"
+    exit 1
+fi
+
+if [ -f "$STAGE3_ASC" ]; then
+    ebegin "Verifying GPG signature of $(basename "$STAGE3_TARBALL")"
+    if [ ! -f "$GENTOO_RELEASE_KEY" ]; then
+        eerror "Gentoo release key not found: $GENTOO_RELEASE_KEY"
+        eerror "Install sec-keys/openpgp-keys-gentoo-release"
+        exit 1
+    fi
+    GNUPGHOME=$(mktemp -d)
+    export GNUPGHOME
+    gpg --batch --quiet --import "$GENTOO_RELEASE_KEY" 2>/dev/null
+    gpg --batch --verify "$STAGE3_ASC" "$STAGE3_TARBALL" 2>/dev/null
+    GPG_RC=$?
+    rm -rf "$GNUPGHOME"
+    unset GNUPGHOME
+    eend $GPG_RC "GPG verification FAILED — refusing to extract"
+    [ $GPG_RC -ne 0 ] && exit 1
+else
+    ewarn "No .asc signature found — skipping GPG verification"
+fi
+
+ebegin "Unpacking $(basename "$STAGE3_TARBALL")"
 (
     cd "$CHROOT_TOP"/"$1" || exit
-    tar xpf "$CHROOT_TOP"/*"$2"-[0-9]*.tar.* --xattrs-include='*.*' --numeric-owner
+    tar xpf "$STAGE3_TARBALL" --xattrs-include='*.*' --numeric-owner
 )
 eend $?
 
