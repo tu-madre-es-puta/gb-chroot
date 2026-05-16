@@ -24,10 +24,10 @@ einfo "Creating /var/cache/binpkgs/$1"
 )
 
 #TODO implement downloading + gpg checking
-ebegin "Unpacking $(ls "$CHROOT_TOP"/*"$2"-[0-9]*)"
+ebegin "Unpacking $(ls "$CHROOT_TOP"/*"$2"-[0-9]*.tar.*)"
 (
     cd "$CHROOT_TOP"/"$1" || exit
-    tar xpf "$CHROOT_TOP"/*"$2"-[0-9]* --xattrs-include='*.*' --numeric-owner
+    tar xpf "$CHROOT_TOP"/*"$2"-[0-9]*.tar.* --xattrs-include='*.*' --numeric-owner
 )
 eend $?
 
@@ -71,10 +71,7 @@ einfo "Creating portage directories"
     mkdir "$CHROOT_TOP"/"$1"/var/db/repos
 )
 
-einfo "Creating layman directory"
-(
-    mkdir "$CHROOT_TOP"/"$1"/var/lib/layman
-)
+
 
 einfo "Updating /etc/profile"
 (
