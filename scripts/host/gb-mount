@@ -46,7 +46,9 @@ mount_it()
     disable_interrupt
     mount --types proc /proc "$CHROOT_TOP/$1/proc"
     mount --rbind /sys "$CHROOT_TOP/$1/sys"
+    mount --make-rslave "$CHROOT_TOP/$1/sys"
     mount --rbind /dev "$CHROOT_TOP/$1/dev"
+    mount --make-rslave "$CHROOT_TOP/$1/dev"
     mount -o bind /tmp "$CHROOT_TOP/$1/tmp"
     mount -o bind "/var/cache/binpkgs/$1" "$CHROOT_TOP/$1/var/cache/binpkgs"
     mount -o bind /var/cache/distfiles "$CHROOT_TOP/$1/var/cache/distfiles"
