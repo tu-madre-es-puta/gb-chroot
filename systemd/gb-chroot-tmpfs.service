@@ -6,7 +6,7 @@ ConditionFileNotEmpty=/etc/conf.d/gb-chroot
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-EnvironmentFile=/etc/conf.d/gb-chroot
+EnvironmentFile=-/etc/conf.d/gb-chroot
 ExecCondition=/bin/bash -c 'test -n "$USE_TMPFS"'
 ExecStart=/bin/bash -c 'mkdir -p "$CHROOT_TOP/tmpfs" && mount -t tmpfs -o "rw,nosuid,noatime,nodev,size=$USE_TMPFS" none "$CHROOT_TOP/tmpfs"'
 ExecStop=/bin/bash -c 'umount -f "$CHROOT_TOP/tmpfs"'
