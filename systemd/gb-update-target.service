@@ -1,0 +1,11 @@
+[Unit]
+Description=gb-chroot target update
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/gb-update-target
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gb-update

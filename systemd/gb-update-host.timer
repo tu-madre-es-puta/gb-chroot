@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly gb-chroot host update (Monday 00:00)
+
+[Timer]
+OnCalendar=Mon *-*-* 00:00:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

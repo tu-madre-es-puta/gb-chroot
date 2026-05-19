@@ -1,0 +1,14 @@
+[Unit]
+Description=gb-chroot mount for %i
+After=local-fs.target gb-chroot-tmpfs.service
+Wants=gb-chroot-tmpfs.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=/etc/conf.d/gb-chroot
+ExecStart=/usr/bin/gb-mount m %i
+ExecStop=/usr/bin/gb-mount u %i
+
+[Install]
+WantedBy=multi-user.target

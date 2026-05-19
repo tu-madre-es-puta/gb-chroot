@@ -10,6 +10,15 @@ fi
 
 source /etc/conf.d/gb-chroot
 
+# Init-system-agnostic service control
+service_ctl() {
+    if command -v systemctl >/dev/null 2>&1; then
+        systemctl "$1" "$2"
+    else
+        rc-service "$2" "$1"
+    fi
+}
+
 check_exit()
 {
     RETVAL=$?
@@ -25,7 +34,7 @@ check_exit()
     fi
 }
 
-rc-service rsyncd stop
+service_ctl stop rsyncd
 
 emerge --sync
 check_exit 1 "Sync"
@@ -53,5 +62,5 @@ if [ $ALL_RETVAL -ne 0 ]
     then
         eerror "gb-all failed, not starting rsyncd"
     else
-        rc-service rsyncd start
+        service_ctl start rsyncd
 fi
